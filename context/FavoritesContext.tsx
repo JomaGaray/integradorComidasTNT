@@ -1,6 +1,3 @@
-// context/FavoritesContext.tsx
-// Estado global de favoritos. Guarda en AsyncStorage para que sobreviva al cierre de la app.
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
@@ -10,7 +7,6 @@ type FavoritesContextValue = {
   favorites: string[];
   isFavorite: (id: string) => boolean;
   toggleFavorite: (id: string) => void;
-  /** false hasta que terminó de leer AsyncStorage (útil para evitar parpadeos) */
   ready: boolean;
 };
 
@@ -20,7 +16,6 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
 
-  // 1) Cargar una sola vez al iniciar la app.
   useEffect(() => {
     (async () => {
       try {
@@ -34,7 +29,6 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     })();
   }, []);
 
-  // 2) Persistir cada vez que cambian (recién después de la carga inicial).
   useEffect(() => {
     if (!ready) return;
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(favorites)).catch((e) =>

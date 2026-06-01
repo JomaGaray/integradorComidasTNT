@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { gradeColor } from '../lib/scores';
-import { MyProduct } from '../transformers/search-products.transformer';
+import { MyProduct } from '../transformers/search-products';
 
 type Props = {
   product: MyProduct;

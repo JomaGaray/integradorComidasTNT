@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProductByCode } from '../services/productService';
 import { SearchType, searchProducts } from '../services/productsService';
-import { transformProductDetail } from '../transformers/product-detail.transformer';
-import { transformSearchProductsResponse } from '../transformers/search-products.transformer';
+import { transformProductDetail } from '../transformers/product-detail';
+import { transformSearchProductsResponse } from '../transformers/search-products';
 
 
 

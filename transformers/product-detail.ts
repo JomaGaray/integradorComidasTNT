@@ -8,7 +8,6 @@ function formatGrade(grade?: string): string | undefined {
 }
 
 export function transformProductDetail(raw: RawProductDetail): Product {
-  // Lee un nutrimento como número (a veces vienen como string).
   const num = (k: string): number | undefined => {
     const v = raw.nutriments?.[k];
     if (typeof v === 'number') return v;
@@ -21,7 +20,6 @@ export function transformProductDetail(raw: RawProductDetail): Product {
     return v === undefined ? undefined : `${fmt(v)}g`;
   };
 
-  // Energía: preferimos kJ para el highlight; en la tabla mostramos kcal y kJ.
   const kcal = num('energy-kcal_100g');
   const kj = num('energy-kj_100g');
   let energyTable: string | undefined;
@@ -29,7 +27,6 @@ export function transformProductDetail(raw: RawProductDetail): Product {
   else if (kcal !== undefined) energyTable = `${fmt(kcal)} kcal`;
   else if (kj !== undefined) energyTable = `${fmt(kj)} kJ`;
 
-  // Highlights (chips): solo los que existen.
   const highlights: { label: string; value: string }[] = [];
   if (kj !== undefined) highlights.push({ label: 'ENERGY', value: `${fmt(kj)} kJ` });
   else if (kcal !== undefined) highlights.push({ label: 'ENERGY', value: `${fmt(kcal)} kcal` });
@@ -40,7 +37,6 @@ export function transformProductDetail(raw: RawProductDetail): Product {
   const sugH = grams('sugars_100g');
   if (sugH) highlights.push({ label: 'SUGARS', value: sugH });
 
-  // Tabla nutricional: solo las filas que existen.
   const rows: Product['nutrition']['rows'] = [];
   if (energyTable) rows.push({ label: 'Energy', value: energyTable });
   const fat = grams('fat_100g');

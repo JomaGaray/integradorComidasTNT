@@ -1,8 +1,3 @@
-// lib/scores.ts
-// Colores de los scores (Nutri / NOVA / Eco). Reutilizado en detalle, lista y home.
-
-// Acepta string (no solo el tipo Grade) porque desde la API el grade llega como
-// 'a', 'b', 'a-plus', 'unknown', etc. Devuelve gris para lo desconocido.
 export function gradeColor(grade: string): string {
   switch (grade.toUpperCase()) {
     case 'A+':

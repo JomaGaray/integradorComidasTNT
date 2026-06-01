@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { useFavorites } from '../context/FavoritesContext';
 import { getProductsByCodes } from '../services/productsService';
-import { transformSearchProductsResponse } from '../transformers/search-products.transformer';
+import { transformSearchProductsResponse } from '../transformers/search-products';
 
 export function useFavoritos() {
   const { favorites } = useFavorites();
