@@ -1,6 +1,3 @@
-// components/ProductCard.tsx
-// La tarjeta de cada producto en la lista (imagen + nombre + marca + badges).
-
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -16,7 +13,6 @@ type Props = {
 export default function ProductCard({ product, onPress }: Props) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      {/* Imagen o placeholder */}
       {product.imageUrl ? (
         <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
       ) : (
@@ -25,7 +21,6 @@ export default function ProductCard({ product, onPress }: Props) {
         </View>
       )}
 
-      {/* Info */}
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={2}>
           {product.name}

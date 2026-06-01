@@ -1,18 +1,11 @@
-// components/ScoreCard.tsx
-// Las tarjetas grandes de score que se ven en el detalle (Nutri-Score, NOVA, Eco-Score).
-
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 type Props = {
-  /** Etiqueta superior, ej: "NUTRI-SCORE" */
   label: string;
-  /** Texto del recuadro de color, ej: "A" o "1" */
   value: string;
-  /** Color de fondo del recuadro */
   color: string;
-  /** Muestra una hojita (lo usamos en Eco-Score) */
   leaf?: boolean;
 };
 
