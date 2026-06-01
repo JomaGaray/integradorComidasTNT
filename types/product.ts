@@ -1,6 +1,3 @@
-// types/product.ts
-// Modelo de datos de un producto. Lo usan tanto el listado como el detalle.
-
 export type Grade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D' | 'E';
 
 export type NutritionRow = {
