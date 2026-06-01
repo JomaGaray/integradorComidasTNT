@@ -47,9 +47,6 @@ export async function getProductByCode(code: string): Promise<RawProductDetail> 
 
   console.debug("Called from Producto Service: ", `${BASE_URL}?${params.toString()}`);
   
-
-  // v3 envuelve el producto: { product, status, ... }.
-  // Si el código no existe, status viene "failure".
   if (data.status !== 'success' || !data.product) {
     throw new Error(`Producto ${code} no encontrado`);
   }

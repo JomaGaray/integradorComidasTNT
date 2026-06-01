@@ -16,14 +16,13 @@ export async function getAllCategories(query: string = ''): Promise<string[]> {
     tagtype: 'categories',
     lc: 'es',
     string: query,
-    limit: '100',
+    limit: '20',
   });
 
   console.debug("Called from Category Service: ", `${url}?${params.toString()}`);
 
   const response = await fetch(`${url}?${params.toString()}`, {
     headers: {
-      // OFF pide identificar la app en el User-Agent.
       'User-Agent': 'DigitalEpicurean/1.0 (Expo app - UNTDF TNT 2026)',
     },
   });
