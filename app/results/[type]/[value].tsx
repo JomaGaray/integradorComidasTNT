@@ -1,32 +1,39 @@
-// app/category/[categoria].tsx
-// LISTADO de productos de una categoría. Ruta dinámica: /category/<categoria>
-
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-    FlatList,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useProductosByCategory } from '../../hooks/useProductos';
-import ProductCard from './../../components/ProductCard';
+import ProductCard from '../../../components/ProductCard';
+import { useProductos } from '../../../hooks/useProducts';
+import { SearchType } from '../../../services/productsService';
 
 const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
-export default function ProductsByCategoryScreen() {
-  const { categoria } = useLocalSearchParams<{ categoria: string }>();
-  const cat = decodeURIComponent(categoria ?? '');
+//tipos validos de busqueda
+const VALID_TYPES: SearchType[] = ['category', 'label', 'brand'];
 
-  const { data, isLoading, isError, error, refetch } = useProductosByCategory(cat);
+export default function SearchResultsScreen() {
+  const params = useLocalSearchParams<{ type: string; value: string }>();
+  const value = params.value ?? '';
+
+  // valido el type que viene de la URL, si no matchea, seteo categoria
+  const type: SearchType = VALID_TYPES.includes(params.type as SearchType) ? (params.type as SearchType) : 'category';
+
+  //paso el type y el valor buscado
+  //   /search/category/Beverages
+  //   /search/label/Organic
+  //   /search/brand/Nestle
+  const { data, isLoading, isError, error, refetch } = useProductos(type, value);
   const [search, setSearch] = useState('');
 
-  // Filtro local (sobre lo ya cargado), sin pegarle de nuevo a la API.
   const filtered = useMemo(() => {
     const list = data?.products ?? [];
     const q = search.trim().toLowerCase();
@@ -38,7 +45,6 @@ export default function ProductsByCategoryScreen() {
 
   return (
     <View style={styles.container}>
-      {/* TOP BAR */}
       <SafeAreaView edges={['top']} style={styles.headerSafe}>
         <View style={styles.topBar}>
           <Pressable hitSlop={10} onPress={() => router.back()}>
@@ -56,7 +62,7 @@ export default function ProductsByCategoryScreen() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View style={styles.listHeader}>
-            <Text style={styles.title}>{capitalize(cat)}</Text>
+            <Text style={styles.title}>{capitalize(value)}</Text>
             <Text style={styles.count}>
               {data ? `${data.count.toLocaleString()} ITEMS FOUND` : ' '}
             </Text>
@@ -65,7 +71,7 @@ export default function ProductsByCategoryScreen() {
               <Ionicons name="search" size={18} color="#9AA0A6" />
               <TextInput
                 style={styles.searchInput}
-                placeholder="Search juices, craft sodas, teas..."
+                placeholder="Search within results..."
                 placeholderTextColor="#9AA0A6"
                 value={search}
                 onChangeText={setSearch}
@@ -74,10 +80,7 @@ export default function ProductsByCategoryScreen() {
           </View>
         }
         renderItem={({ item }) => (
-          <ProductCard
-            product={item}
-            onPress={() => router.push(`/product/${item.id}`)}
-          />
+          <ProductCard product={item} onPress={() => router.push(`/product/${item.id}`)} />
         )}
         ListEmptyComponent={
           isLoading ? (
@@ -97,7 +100,7 @@ export default function ProductsByCategoryScreen() {
               </Pressable>
             </View>
           ) : (
-            <Text style={styles.empty}>No se encontraron productos para “{cat}”.</Text>
+            <Text style={styles.empty}>No se encontraron productos para “{value}”.</Text>
           )
         }
       />
@@ -143,21 +146,10 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, fontSize: 15, color: '#1A1A1A' },
 
-  skeletonCard: {
-    height: 96,
-    borderRadius: 16,
-    backgroundColor: '#ECEDEF',
-    marginBottom: 14,
-  },
-
+  skeletonCard: { height: 96, borderRadius: 16, backgroundColor: '#ECEDEF', marginBottom: 14 },
   empty: { color: '#6B7280', fontSize: 14, paddingVertical: 24, textAlign: 'center' },
 
-  errorBox: {
-    backgroundColor: '#FDECEA',
-    borderRadius: 14,
-    padding: 18,
-    gap: 8,
-  },
+  errorBox: { backgroundColor: '#FDECEA', borderRadius: 14, padding: 18, gap: 8 },
   errorText: { color: '#C0392B', fontWeight: '700', fontSize: 15 },
   errorDetail: { color: '#C0392B', fontSize: 13 },
   retryBtn: {

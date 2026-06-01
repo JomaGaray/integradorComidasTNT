@@ -1,6 +1,3 @@
-// app/product/[id].tsx
-// DETALLE de un producto. El [id] es el CÓDIGO DE BARRAS. Se trae desde la API.
-
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
@@ -17,12 +14,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ScoreCard from '../../components/ScoreCard';
 import { useFavorites } from '../../context/FavoritesContext';
-import { useProductByCode } from '../../hooks/useProductos';
+import { useProductByCode } from '../../hooks/useProducts';
 import { gradeColor, novaColor } from '../../lib/scores';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const code = decodeURIComponent(id ?? '');
+  const code = id ?? '';
 
   const { data: product, isLoading, isError, error, refetch } = useProductByCode(code);
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -65,7 +62,6 @@ export default function ProductDetailScreen() {
       {/* DATOS OK */}
       {product && (
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Envoltorio: hero + tarjeta, para poner el corazón encima de ambos */}
           <View>
             <View style={[styles.hero, { backgroundColor: product.heroColor }]}>
               {product.imageUrl ? (
@@ -124,7 +120,6 @@ export default function ProductDetailScreen() {
               )}
             </View>
 
-            {/* Corazón: al final => se dibuja por encima de la tarjeta */}
             <Pressable
               style={styles.favButton}
               onPress={() => toggleFavorite(product.id)}
@@ -160,7 +155,6 @@ export default function ProductDetailScreen() {
             </View>
           )}
 
-          {/* Tabla nutricional */}
           {product.nutrition.rows.length > 0 && (
             <View style={styles.card}>
               <Text style={styles.nutritionTitle}>
