@@ -22,6 +22,7 @@ const FIELDS = [
   'ecoscore_grade',
 ].join(',');
 
+const PAGE_SIZE = 10;
 
 function assertBaseUrl() {
   if (!BASE_URL) {
@@ -29,50 +30,47 @@ function assertBaseUrl() {
   }
 }
 
-
-export async function searchProducts(type: SearchType, value: string,): Promise<ProductSearchResponse> {
-  
+//busqueda de muchos productos
+export async function searchProducts(
+  type: SearchType,
+  value: string,
+  page: number = 1,
+): Promise<ProductSearchResponse> {
   assertBaseUrl();
-
-
   const params = new URLSearchParams({
-          [PARAM_BY_TYPE[type]]: value, // categories_tags / labels_tags / brands_tags
-          tagtype: "foods",
-          lc: "es",
-          limit: "20",
-          fields:FIELDS
-  })
-
+    [PARAM_BY_TYPE[type]]: value,
+    fields: FIELDS,
+    page_size: String(PAGE_SIZE),
+    page: String(page),
+  });
   return fetchWithParams(params);
 }
 
 
-
-export async function searchProductsByText(term: string): Promise<ProductSearchResponse> {
-  
+//busqueda por texto
+export async function searchProductsByText(
+  term: string,
+  page: number = 1,
+): Promise<ProductSearchResponse> {
   assertBaseUrl();
-
   const params = new URLSearchParams({
     search_terms: term,
     fields: FIELDS,
-    page_size: '24',
+    page_size: String(PAGE_SIZE),
+    page: String(page),
   });
-
   return fetchWithParams(params);
 }
-
+ 
 
 // trae varios productos por sus códigos en UNA sola request, para favoritos
 export async function getProductsByCodes(codes: string[]): Promise<ProductSearchResponse> {
-  
   assertBaseUrl();
-
   const params = new URLSearchParams({
-    code: codes.join(','), // bulk: cod1,cod2,cod3
+    code: codes.join(','),
     fields: FIELDS,
     page_size: String(Math.max(codes.length, 1)),
   });
-  
   return fetchWithParams(params);
 }
 

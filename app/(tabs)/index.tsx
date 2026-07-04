@@ -1,12 +1,17 @@
+// app/(tabs)/index.tsx
+// HOME (tab). Categorías, "Refine by Taste" y "Global Brands" son listas
+// PRE-SETEADAS (data/*.ts) — ya no se consultan a taxonomy_suggestions.
+// Navega a /results/<type>/<value>, que sí busca productos reales en la API.
+
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useCategorias } from '../../hooks/useCategories';
-import { useEtiquetas } from '../../hooks/useLabels';
 import { GLOBAL_BRANDS } from '../../types/brands';
+import { categories } from '../../types/categories';
+import { tags } from '../../types/tags';
 
 const CARD_COLORS = [
   '#3B82C4', '#F2C94C', '#EC5B8B', '#F2994A',
@@ -17,11 +22,9 @@ const CARD_COLORS = [
 const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 export default function Home() {
-  const categorias = useCategorias('');
-  const etiquetas = useEtiquetas('');
-
   return (
     <View style={styles.container}>
+      {/* HEADER */}
       <SafeAreaView edges={['top']} style={styles.headerSafe}>
         <View style={styles.header}>
           <Pressable hitSlop={10}>
@@ -40,6 +43,7 @@ export default function Home() {
           The art of <Text style={styles.titleAccent}>conscious</Text> discovery.
         </Text>
 
+        
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Categories</Text>
           <Pressable hitSlop={8}>
@@ -47,59 +51,31 @@ export default function Home() {
           </Pressable>
         </View>
 
-        {categorias.isLoading && (
-          <View style={styles.grid}>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <View key={i} style={[styles.categoryCard, styles.skeleton]} />
-            ))}
-          </View>
-        )}
-
-        {categorias.isError && (
-          <Text style={styles.sectionError}>No se pudieron cargar las categorías.</Text>
-        )}
-
-        {categorias.data && categorias.data.length > 0 && (
-          <View style={styles.grid}>
-            {categorias.data.map((cat, i) => (
-              <Pressable
-                key={cat}
-                style={[styles.categoryCard, { backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }]}
-                onPress={() => router.push(`/results/category/${encodeURIComponent(cat)}`)}
-              >
-                <Text style={styles.categoryName}>{capitalize(cat)}</Text>
-              </Pressable>
-            ))}
-          </View>
-        )}
+        <View style={styles.grid}>
+          {categories.map((cat, i) => (
+            <Pressable
+              key={cat.id}
+              style={[styles.categoryCard, { backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }]}
+              onPress={() => router.push(`/results/category/${encodeURIComponent(cat.id)}`)}
+            >
+              <Text style={styles.categoryName}>{capitalize(cat.nombre)}</Text>
+            </Pressable>
+          ))}
+        </View>
 
         <Text style={[styles.sectionTitle, styles.blockTitle]}>Refine by Taste</Text>
 
-        {etiquetas.isLoading && (
-          <View style={styles.pillsRow}>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <View key={i} style={[styles.pill, styles.pillSkeleton]} />
-            ))}
-          </View>
-        )}
-
-        {etiquetas.isError && (
-          <Text style={styles.sectionError}>No se pudieron cargar las etiquetas.</Text>
-        )}
-
-        {etiquetas.data && etiquetas.data.length > 0 && (
-          <View style={styles.pillsRow}>
-            {etiquetas.data.map((label) => (
-              <Pressable
-                key={label}
-                style={styles.pill}
-                onPress={() => router.push(`/results/label/${encodeURIComponent(label)}`)}
-              >
-                <Text style={styles.pillText}>{label}</Text>
-              </Pressable>
-            ))}
-          </View>
-        )}
+        <View style={styles.pillsRow}>
+          {tags.map((label) => (
+            <Pressable
+              key={label.id}
+              style={styles.pill}
+              onPress={() => router.push(`/results/label/${encodeURIComponent(label.id)}`)}
+            >
+              <Text style={styles.pillText}>{label.nombre}</Text>
+            </Pressable>
+          ))}
+        </View>
 
         <Text style={[styles.sectionTitle, styles.blockTitle]}>Global Brands</Text>
         <Text style={styles.subtitle}>Explored through the lens of quality.</Text>
@@ -143,7 +119,6 @@ const styles = StyleSheet.create({
   blockTitle: { marginTop: 16, marginBottom: 16 },
   subtitle: { fontSize: 14, color: '#6B7280', marginTop: -10, marginBottom: 16 },
   link: { fontSize: 14, color: '#1B9E4B', fontWeight: '600' },
-  sectionError: { color: '#C0392B', fontSize: 14, paddingVertical: 12 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   categoryCard: {
     width: '48%',
@@ -154,11 +129,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   categoryName: { color: '#FFFFFF', fontSize: 16, fontWeight: '700' },
-  skeleton: { backgroundColor: '#ECEDEF' },
   pillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   pill: { backgroundColor: '#E3F0DD', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10 },
   pillText: { color: '#3B6D2B', fontSize: 14, fontWeight: '600' },
-  pillSkeleton: { width: 90, height: 38, backgroundColor: '#ECEDEF' },
   brandCard: {
     width: '48%',
     backgroundColor: '#F7F8FA',
