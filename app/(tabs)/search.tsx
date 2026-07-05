@@ -29,7 +29,7 @@ import {
 type ScanState = 'idle' | 'loading' | 'found' | 'not_found';
  
 export default function SearchScreen() {
-  // ----- Búsqueda por texto -----
+
   const [text, setText] = useState('');
   const [term, setTerm] = useState('');
  
@@ -50,7 +50,7 @@ export default function SearchScreen() {
  
   const products = useMemo(() => data?.pages.flatMap((p) => p.products) ?? [], [data]);
  
-  // ----- Escáner de barras -----
+  
   const [modalVisible, setModalVisible] = useState(false);
   const [scanState, setScanState] = useState<ScanState>('idle');
   const [scannedCode, setScannedCode] = useState<string | null>(null);
@@ -164,7 +164,7 @@ export default function SearchScreen() {
         }
       />
  
-      {/* MODAL: Escáner de código de barras */}
+      
       <Modal
         visible={modalVisible}
         animationType="slide"

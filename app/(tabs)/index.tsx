@@ -1,8 +1,3 @@
-// app/(tabs)/index.tsx
-// HOME (tab). Categorías, "Refine by Taste" y "Global Brands" son listas
-// PRE-SETEADAS (data/*.ts) — ya no se consultan a taxonomy_suggestions.
-// Navega a /results/<type>/<value>, que sí busca productos reales en la API.
-
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';

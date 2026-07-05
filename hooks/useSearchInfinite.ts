@@ -1,6 +1,3 @@
-// hooks/useBusquedaInfinite.ts
-// Búsqueda por texto libre, paginada con scroll infinito (tab Search).
-
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { searchProductsByText } from '../services/productsService';

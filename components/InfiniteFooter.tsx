@@ -1,7 +1,3 @@
-// components/InfiniteFooter.tsx
-// Footer de FlatList para scroll infinito: spinner mientras carga la próxima página,
-// o mensaje de "no hay más" cuando se acabó.
-
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 

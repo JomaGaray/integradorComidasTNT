@@ -17,9 +17,8 @@ export function useProductsInfinite(type: SearchType, value: string) {
       return transformSearchProductsResponse(response);
     },
 
-    // Le dice a React Query cuál es "la página siguiente".
-    // Si ya estamos en la última página (page_count), devolvemos undefined:
-    // eso es la señal de "no hay más" (hasNextPage pasa a false).
+    //le dice a react query cual es la pag siguiente
+    //si ya estamos en la ultima pagina devuelve undefined
     getNextPageParam: (lastPage) => {
       const isLastPage = lastPage.page >= lastPage.page_count;
       return isLastPage ? undefined : lastPage.page + 1;

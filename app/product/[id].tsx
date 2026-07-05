@@ -39,7 +39,7 @@ export default function ProductDetailScreen() {
         </View>
       </SafeAreaView>
 
-      {/* CARGANDO */}
+      
       {isLoading && (
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#1B9E4B" />
@@ -134,7 +134,7 @@ export default function ProductDetailScreen() {
             </Pressable>
           </View>
 
-          {/* Ingredientes + alérgenos */}
+          
           {(product.ingredients !== '—' || product.allergens) && (
             <View style={styles.card}>
               <View style={styles.sectionTitleRow}>

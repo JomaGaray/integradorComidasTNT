@@ -1,6 +1,3 @@
-// app/results/[type]/[value].tsx
-// Resultados de búsqueda con SCROLL INFINITO. Ruta: /results/<type>/<value>
-
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useMemo, useState } from 'react';
@@ -49,7 +46,7 @@ export default function SearchResultsScreen() {
   );
   const totalCount = data?.pages[0]?.count;
 
-  // filtro local sobre lo ya cargado (no dispara mas requests).
+  // filtro local sobre lo ya cargado (no dispara mas requests)
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return allProducts;
